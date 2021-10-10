@@ -1,0 +1,40 @@
+'''
+Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
+You must write an algorithm with O(log n) runtime complexity.
+'''
+class Solution:
+                
+    def searchInsert(self, nums: List[int], target: int) -> int:
+        # We handle some trivial cases first, given that the array is sorted
+        # If target greater than last item, it must go on the end
+        if target > nums[-1]:
+            return len(nums)
+        # If target is less than the first item, it must go in the beginning
+        if target < nums[0]:
+            return 0
+        
+        # We implement a basic bisection search
+        # Bisection search works recursively by eliminating half of the remaining values with each iteration
+        def bisection(self, nums, s_idx, e_idx, target):
+            # Define a midpoint, which we will compare to our target
+            m_idx = (s_idx+e_idx)//2
+            # This line equates to "if our start and end index are only one apart",
+            # At this point, our search is done 
+            if m_idx == s_idx:
+                # Our target is either (scenario 1) the value at the first index
+                if nums[m_idx] == target:
+                    return m_idx
+                # Or (scenario 2) the value at the second index, 
+                # Or (scenario 3) between the two values 
+                # Scenario 2 or 3 has the same result, since the prompt tells us to return the index 
+                # it would be sorted into if not found, so we combine these to into a single else
+                else:
+                    return e_idx
+            # If our value at the midpoint is too high, we call the function again on the lower half
+            elif nums[m_idx] > target:
+                return bisection(self, nums, s_idx, m_idx, target)
+            # If our value at the midpoint is too low, we call the function again on the upper half
+            else:
+                return bisection(self, nums, m_idx, e_idx, target)
+                
+        return bisection(self, nums, 0, len(nums), target)
