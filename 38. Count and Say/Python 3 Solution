@@ -1,0 +1,35 @@
+'''
+link to original problem: 
+https://leetcode.com/problems/count-and-say/
+'''
+
+class Solution:
+    def countAndSay(self, n: int) -> str:
+        # Base case, when we reach this case, return the solution to the base case '1'
+        if n == 1:
+            return '1'
+ 
+        else: 
+            # Recursive step, our current value is our function evaluated at n-1
+            num = self.countAndSay(n-1)
+            # We figure out how to "count and say" f(n-1)
+            # count counts the number of iterations of the current unique value
+            # cval stores the value of the current unique value
+            # nnum is our "count and say" string which we will append to
+            count = 1
+            cval = num[0]
+            nnum = ''
+            for x in range(1, len(num)):
+                # If the current number is the same as the previous number, we simply add 1 to the count
+                if num[x] == num[x-1]:
+                    count += 1
+                # If the current number changes to a new number, we append the total of the previous number 
+                # and the value of the previous number to our "count and say" string and reset the counter to 1 
+                # as well as the current value to the new value
+                else:
+                    nnum += str(count)+cval
+                    cval = num[x]
+                    count = 1
+            # We need to append the final values for the last block of digits
+            nnum += str(count)+cval
+            return nnum
