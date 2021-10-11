@@ -1,0 +1,40 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/generate-parentheses/
+'''
+
+'''
+Sketch, we want all possible combinations, of valid parentheses,
+Note at each junction we can either choose to add a left parentheses
+or a right parentheses but at all times, the number of right parentheses 
+(closures) must be no greater than the number of left parentheses (openings)
+'''
+
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        # combos stores our results of valid strings
+        combos = []
+          
+        def btp(cur, left, right):
+            '''
+            Our stop condition is when the number of left parentheses reaches 
+            our limit n.  At this point, we simply fill in the remaining 
+            right parentheses which should be n-right and append to combos
+            if left == n:
+                cur += ')'*(n-right)
+                combos.append(cur)
+                return 
+            
+            '''
+            At each juncture, we can continue down the tree by adding a left 
+            parentheses or a right parentheses, but we can only add a right 
+            parentheses if there are fewer right than left
+            '''
+            btp(cur+'(', left+1, right)
+            if right < left:
+                btp(cur+')', left, right+1)
+        
+        # We start with a single left parentheses and apply backtracking
+        btp('(',1,0)
+        
+        return combos
