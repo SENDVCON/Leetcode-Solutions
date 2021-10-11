@@ -1,0 +1,110 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/string-to-integer-atoi/
+'''
+
+'''
+Note: Python 3 supports integers longer than 32 bits, and the submission tests
+do not check to see if you have avoided storing an integer outside of the 32-bit 
+signed integer range.  We will self-impose the constraints given in the problem.
+One result is that this will not score well in the submission system. 
+'''
+class Solution:
+    def myAtoi(self, s: str) -> int:
+    
+        # Create a dictionary to convert single digit char to int
+        stoi = {'1': 1,
+               '2': 2,
+               '3': 3,
+               '4': 4,
+               '5': 5,
+               '6': 6,
+               '7': 7,
+               '8': 8,
+               '9': 9,
+               '0': 0}
+        
+        # val: stores the return value 
+        # sign: stores the sign positive or negative
+        # idx: a pointer to our current index location
+        val = 0
+        sign = 1  
+        idx = 0
+        
+        # Trivial case if empty string
+        if s == '':
+            return val
+        
+        # Strip leading whitespace
+        while s[idx] == ' ':
+            idx += 1
+            if idx == len(s):
+                return val
+        
+        # Strip positive / negative sign and set sign variable
+        if s[idx] in '+-':
+            if s[idx] == '-':
+                sign = -1
+            idx += 1
+            if idx == len(s):
+                return val 
+        
+        # Strip leading zeros
+        while s[idx] == '0':
+            idx += 1
+            if idx == len(s):
+                return val
+        # sidx: the start location of our integer
+        sidx = idx
+        
+        # Gather digits until the end or non-digit is reached
+        while s[idx] in '0123456789':
+            idx += 1
+            if idx == len(s):
+                break
+        # eidx: the end location of our integer
+        eidx = idx
+        
+        # p10: power 10, so we may construct our final value 
+        # If we have n digits our value is the sum of 
+        # digit*10**(n-1) from n to 1
+        p10 = eidx-sidx-1
+        
+        # If we have more than 10 digits, we are outside our range and clamp values
+        if p10 > 9:
+            if sign == 1:
+                return 2147483647
+            else:
+                return -2147483648
+                
+        # If we have 10 digits exactly, we must test to see if we are outside of range
+        elif p10 == 9:    
+            mval = '2147483647'
+            for i in range(sidx, eidx):
+                # If at any point, the next digit is less than corresponding digit in 2^31
+                # we are in range and compute val as described
+                if stoi[s[i]] < stoi[mval[10-eidx+i]]:
+                    for i in range(sidx, eidx):
+                        val += stoi[s[i]]*10**p10
+                        p10 -= 1
+                    val *= sign
+                    return val
+                # If the next digit is greater than the corresponding digit in 2^31 we 
+                # are outside of range and break to the next step
+                if stoi[s[i]] > stoi[mval[10-eidx+i]]:
+                    break
+            # If we made it here, it means we are outside of range and clamp values
+            if sign == -1:
+                if stoi[s[eidx-1]] >= 8:
+                    return -2147483648
+                return -2147483647
+            return 2147483647
+        
+        # If we have less than 10 digits, we construct val as described
+        else:
+            for i in range(sidx, eidx):
+                val += stoi[s[i]]*10**p10
+                p10 -= 1
+        val *= sign
+        
+        return val 
