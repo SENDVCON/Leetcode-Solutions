@@ -1,0 +1,53 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/trapping-rain-water/
+'''
+
+'''
+Sketch:
+The landscape is able to trap water if the current height is lower than 
+the maximum to the left and the maximum to the right with the amount of water 
+being the minimum of the left max and the right max less the current height.
+This is an O(N) solution requiring us to iterate through the array once to 
+find the peak height and once more to compute the water storage.
+'''
+
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        peak = max(height)
+        water = 0
+        lmax = height[0]
+        rmax = height[-1]
+        lidx = 0
+        ridx = len(height)-1
+        
+        '''
+        From the left side of the landscape we track the maximum height to the left,
+        whenever we encounter a height lower than that left max, we add the difference to 
+        our total water captured, we stop when we reach the maximum height.  We then do the
+        same process from the right side of the landscape.
+        '''
+        while height[lidx] < peak:
+            if height[lidx] > lmax:
+                lmax = height[lidx]
+            else:
+                water += lmax - height[lidx]
+            lidx += 1
+            
+        while height[ridx] < peak:
+            if height[ridx] > rmax:
+                rmax = height[ridx]
+            else:
+                water += rmax - height[ridx]
+            ridx -= 1
+        
+        '''
+        At this point, our two index pointers should point to the left most and right most
+        indices which are peaks of our landscape.  Between these two peaks, any height less 
+        than the peak will store water equal to the peak value less the height
+        '''
+        while lidx < ridx:
+            lidx += 1
+            water += peak - height[lidx]
+        
+        return water
