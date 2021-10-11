@@ -1,0 +1,34 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+
+Given a string containing digits from 2-9 inclusive,
+return all possible letter combinations that the number could represent,
+given a mapping of digits to letters as on a telephone, Note: 1 does not map to any letters
+Return the answer in any order.
+'''
+
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        # Dictionary mapping digits to corresponding letters
+        dtol = {'2': 'abc',
+               '3': 'def',
+               '4': 'ghi',
+               '5': 'jkl',
+               '6': 'mno',
+               '7': 'pqrs',
+               '8': 'tuv',
+               '9': 'wxyz'}
+        
+        # Trivial case where input is empty
+        if digits == '':
+            return []
+        
+        # First convert our number string into a list of lists of digits
+        d = [dtol[i] for i in digits]
+        combos = ['']
+        # List comprehension to create all possible combinations
+        for letters in d:
+            combos = [combo+char for char in letters for combo in combos]
+        
+        return combos
