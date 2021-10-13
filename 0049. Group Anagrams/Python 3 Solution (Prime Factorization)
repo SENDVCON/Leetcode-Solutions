@@ -1,0 +1,58 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/group-anagrams/
+'''
+
+'''
+Sketch: The brute force method would be to sort every string in our list
+and then compare them.  Python built in sort() method would be able to 
+accomplish this.  But sorting a string is O(n^2) approach, we can achieve O(n)
+comparison time by mapping each letter to a prime value, and every product 
+would thus have a unique anagram mapping based on its prime factor decomposition.
+'''
+
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        # Dictionary to map each letter to a unique prime value
+        dltp = {'a':2,
+               'b':3,
+               'c':5,
+               'd':7,
+               'e':11,
+               'f':13,
+               'g':17,
+               'h':19,
+               'i':23,
+               'j':29,
+               'k':31,
+               'l':37,
+               'm':41,
+               'n':43,
+               'o':47,
+               'p':53,
+               'q':59,
+               'r':61,
+               's':67,
+               't':71,
+               'u':73,
+               'v':79,
+               'w':83,
+               'x':89,
+               'y':97,
+               'z':101}
+               
+        # Dictionary to store lists of anagrams based on their prime product
+        dictana = {}
+        
+        # Compute prime product of each string in strs and store in dictana
+        for s in strs:
+            prod = 1
+            for char in s:
+                prod *= dltp[char]
+            if prod in dictana.keys():
+                dictana[prod].append(s)
+            else:
+                dictana[prod] = [s]
+        
+        # Return a list of lists of anagrams
+        return dictana.values()
