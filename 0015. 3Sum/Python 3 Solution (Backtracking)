@@ -1,0 +1,56 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/3sum/
+'''
+
+'''
+Note: This solution does not pass the time limit imposed for this problem. 
+'''
+
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        
+        solutions = []
+        nums.sort()
+        
+        def bts(i, arr):
+        
+            '''
+            These are our stop conditions
+            '''
+            if len(arr) == 3:
+                if sum(arr) == 0:
+                    solutions.append(arr.copy())
+                    return
+                else:
+                    return
+            if len(nums)-i <= 3-len(arr):
+                if len(nums)-i < 3-len(arr):
+                    return
+                else:
+                    arr.extend(nums[i:])
+                    if sum(arr) == 0:
+                        solutions.append(arr.copy())
+                    for _ in range(len(nums)-i):
+                        arr.pop()
+                    return 
+
+            '''
+            We can choose to append the current value
+            '''
+            arr.append(nums[i])
+            bts(i+1, arr)
+            
+            '''
+            We can choose to skip the current value
+            '''
+            arr.pop()
+            k = i+1
+            while k < len(nums) and nums[k] == nums[i]:
+                k += 1
+            bts(k, arr)
+         
+        # Call our backtracking algorithm
+        bts(0,[])
+        
+        return solutions
