@@ -1,0 +1,33 @@
+'''
+Link to original problem: 
+https://leetcode.com/problems/zigzag-conversion/
+'''
+
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        # Trivial case where there is only one row
+        if numRows == 1:
+            return s
+        
+        '''
+        vlen is the length of a single "V" shape in the pattern
+        We employ modular arithmetic to find out which row each
+        character in s belongs to in the converted string
+        '''
+        vlen = 2*numRows-2
+        zigzag = ['' for _ in range(numRows)]
+        
+        for i in range(len(s)):
+            ''' 
+            vpos is the position in our "V" shape that each character
+            in s sits at, and thus determines which row that character
+            will belong to in the converted string
+            '''
+            vpos = i%vlen
+            # These are the positions going straight down
+            if vpos < numRows:
+                zigzag[vpos] += s[i]
+            # These are the positions going diagonal back up
+            else:
+                zigzag[vlen-vpos] += s[i]
+        return ''.join(zigzag)
