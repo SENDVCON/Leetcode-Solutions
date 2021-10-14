@@ -1,0 +1,70 @@
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        # Trivial case if there aren't enough values, return empty list
+        if len(nums) < 3:
+            return []
+       
+        solutions = []
+        # We need to sort nums to implement our 3 pointer method
+        nums.sort()
+        p1 = 0
+        p2 = 1
+        p3 = len(nums)-1
+        
+        while p1 < p2 and p2 < p3:  
+            '''
+            If we find a solution, we need to move our 2nd pointer right to the next 
+            new unique value or until we have exhausted all options in which case
+            we reset with the 1st and 2nd pointers incremented so that the 1st pointer
+            is at the next unique value. 
+            '''
+            if nums[p2] + nums[p3] + nums[p1] == 0:
+                solutions.append([nums[p1],nums[p2],nums[p3]])
+                
+                '''
+                This step is necessary to avoid duplicates, If we are at a solution,
+                and nums[p2+1] is equal to nums[p2], we would have the exact same 
+                triplet.  Therefore, we need to go to the next unique value for the
+                2nd pointer to explore unique solutions. 
+                '''
+                k = p2 + 1 
+                while nums[k] == nums[p2] and k < p3:
+                    k += 1
+                    
+                # There are no more unique values to test, we reset 
+                if k == p3:
+                    p3 = len(nums)-1
+                    k = p1 + 1
+                    while k < len(nums) and nums[p1] == nums[k]:
+                        k += 1
+                    p1 = k
+                    p2 = p1 + 1
+                    continue
+                    
+                p2 = k
+                
+            # If we are too high, we move the 3rd pointer left to decrease our total
+            elif nums[p2] + nums[p3] + nums[p1] > 0:
+                p3 -= 1
+                
+            # If we are too low, we move the 2nd pointer right to increase our total
+            else:
+                p2 += 1
+                
+            '''
+            If we get to a point where there are no more valid moves for the 2nd and 
+            3rd pointers, we first check if this last iteration is a valid solution, 
+            and then reset all pointers with the 1st and 2nd pointers incremented so 
+            that the 1st pointer is at the next unique value.
+            '''
+            if p2+1 == p3:
+                if nums[p2] + nums[p3] + nums[p1] == 0:
+                    solutions.append([nums[p1],nums[p2],nums[p3]])
+                p3 = len(nums)-1
+                k = p1 + 1
+                while k < len(nums) and nums[p1] == nums[k]:
+                    k += 1
+                p1 = k
+                p2 = p1 + 1
+                
+        return solutions
