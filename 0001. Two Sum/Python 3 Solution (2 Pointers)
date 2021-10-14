@@ -1,0 +1,40 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/two-sum/
+
+Given an array of integers nums and an integer target, return 
+indices of the two numbers such that they add up to target.
+You may assume that each input would have exactly one solution, 
+and you may not use the same element twice.
+You can return the answer in any order.
+'''
+
+'''
+Sketch:  Two Pointers
+If we have a sorted (ascending) list, we can use two pointers.
+We start with the left pointer on the first index and the right
+pointer on the last index.  We then compare our sum against our 
+target, if we are too low, moving the left index will increase 
+our sum and if we are too high, moving the right index will 
+decrease our sum.  
+'''
+
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        p1 = 0
+        p2 = len(nums)-1
+        
+        # We preserve the original index for nums 
+        nums = [[nums[i],i] for i in range(len(nums))]
+        
+        # We sort the nums list
+        nums.sort() 
+        
+        # We implement two pointer method
+        while p1 < p2:
+            if nums[p1][0] + nums[p2][0] == target:
+                return [nums[p1][1], nums[p2][1]]
+            elif nums[p1][0] + nums[p2][0] > target:
+                p2 -= 1
+            else:
+                p1 += 1
