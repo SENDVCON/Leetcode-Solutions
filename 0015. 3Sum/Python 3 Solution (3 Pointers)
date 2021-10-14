@@ -1,3 +1,21 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/3sum/
+'''
+
+'''
+Sketch: 3 Pointers Method
+We start with a sorted list in ascending order
+1st pointer at leftmost index,
+2nd pointer at second index,
+3rd pointer at rightmost index
+We move the 2nd pointer right or 3rd pointer left until we achieve a solution or there are 
+no more possible moves.  The decision to move the 2nd pointer or 3rd pointer depends if our
+current total is too high or too low, moving the 3rd pointer decreases our total and moving
+the 2nd pointer increases our total.  
+If there are no more possible moves, we start again with the 1st pointer at the ith index
+'''
+
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
         # Trivial case if there aren't enough values, return empty list
