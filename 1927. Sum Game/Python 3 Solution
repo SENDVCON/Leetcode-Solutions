@@ -1,0 +1,48 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/sum-game/
+'''
+
+'''
+Sketch: Mathematical Explanation
+Bob can only win if there are an even number more ? on the side with the 
+lower initial sum and the number of pairs of extra ? is equal to the 
+difference between the initial sums of both sides divided by 9.
+
+Bob only has the power to make the sum of two ? on the same side 9, 
+or to completely negate two ? on opposite sides by playing the 
+same value as Alice on the opposite side. In any other scenario, 
+Alice can simply max out one side using all 9's such that it's 
+value exceeds the total possible on the othe side.
+
+So basically a winning situation for Bob (other than a trivial one) is something like
+?? ?? ? (10 total) | ? (28 total)
+If Alice makes a move on the right, Bob makes equal move on the left
+If Alice makes a move on the left (call it N), Bob makes (9-N) on the left
+
+The number of extra question marks on the left hand side equals 
+(Right total - Left total)/4.5
+'''
+
+class Solution:
+    def sumGame(self, num: str) -> bool:
+        lq = 0
+        ls = 0
+        rq = 0
+        rs = 0
+        for i in range(len(num)//2):
+            if num[i] == '?':
+                lq += 1
+            else:
+                ls += int(num[i])
+        for i in range(len(num)//2, len(num)):
+            if num[i] == '?':
+                rq += 1
+            else:
+                rs += int(num[i])
+        
+        if (lq+rq)%2 == 0:
+            if ((lq-rq)//2)*9 == rs-ls:
+                return False
+
+        return True
