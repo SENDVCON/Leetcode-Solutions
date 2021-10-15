@@ -1,0 +1,33 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/minimum-moves-to-convert-string/
+
+You are given a string s consisting of n characters which are either 'X' or 'O'.
+A move is defined as selecting three consecutive characters of s and converting them to 'O'. 
+Note that if a move is applied to the character 'O', it will stay the same.
+Return the minimum number of moves required so that all the characters of s are converted to 'O'.
+'''
+
+'''
+Intuitive Explanation:
+If we read the string left to right, certainly we can just omit any
+leading Os as we do not have to convert those.  At the first instance
+of X we must absolutely do a conversion to convert that to an O.  
+Since this is the first instance of X, all proceeding characters are O 
+and so we can get "maximum value" of our conversion by converting two 
+following characters as well with our move.  After this move, we can 
+apply this same logic recursively to the remaining string.  
+'''
+
+class Solution:
+    def minimumMoves(self, s: str) -> int:
+        i = 0
+        count = 0
+        while i < len(s):
+            if s[i] == 'X':
+                i += 3
+                count += 1
+            else:
+                i += 1
+        return count
+        
