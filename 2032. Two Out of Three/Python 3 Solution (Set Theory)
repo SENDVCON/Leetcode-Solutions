@@ -1,0 +1,20 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/two-out-of-three/submissions/
+
+Given three integer arrays nums1, nums2, and nums3, return a distinct array 
+containing all the values that are present in at least two out of the three 
+arrays. You may return the values in any order.
+'''
+
+'''
+Intuition (Set Theory):
+If x is in at least two of the three arrays, then x must be in one of the 
+three sets {nums1 and nums2}, {nums2 and nums3} or {nums1 and nums3}.  Thus,
+the union of those three sets should encompass all possible solutions. 
+'''
+
+class Solution:
+    def twoOutOfThree(self, nums1: List[int], nums2: List[int], nums3: List[int]) -> List[int]:
+        s1, s2, s3 = set(nums1), set(nums2), set(nums3) 
+        return list(s1.intersection(s2).union(s1.intersection(s3)).union(s2.intersection(s3)))
