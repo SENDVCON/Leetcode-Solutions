@@ -1,0 +1,42 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/reverse-integer/
+
+Given a signed 32-bit integer x, return x with its digits reversed. 
+If reversing x causes the value to go outside the signed 32-bit integer range [-231, 231 - 1], then return 0.
+
+Assume the environment does not allow you to store 64-bit integers (signed or unsigned).
+'''
+
+'''
+Note: In order to adhere to the constraint, we must ensure we do not store 
+an integer outside of the signed 32-bit integer range.  Therefore, we can 
+only safely cast a string to an int if the string is 9 characters or less.
+'''
+
+class Solution:
+    def reverse(self, x: int) -> int:
+        # Reverse the string
+        strx = str(x)[::-1]
+        
+        # If we had a negative value, remove the negative sign
+        # We use a flag to record the negative value
+        neg_flag = 1
+        if strx[-1] == '-':
+            strx = strx[:len(strx)-1]
+            neg_flag = -1
+            
+        # If longer than 10 characters, will overflow 
+        if len(strx) > 10:
+            return 0
+            
+        # If exactly 10 characters, it might overflow
+        # We must be careful to only cast 9 characters at a time
+        if len(strx) == 10:
+            if int(strx[:9]) > 214748364:
+                return 0
+            elif int(strx[:9]) == 214748364 and (strx[9] == '9' or (strx[9] in '89' and neg_flag == 1)):
+                return 0
+        
+        # If passes all conditions, return cast int times our negative flag
+        return int(strx)*neg_flag
