@@ -1,0 +1,94 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/longest-palindromic-substring/
+
+Given a string s, return the longest palindromic substring in s.
+'''
+
+'''
+Sketch and Intuition:
+We check the longest possible palindrome that we can create using each character
+(or pair of matching characters for an even length palindrome) in our string s 
+as a starting point by expanding outwards.  For example, if we start at the nth 
+character, we then check if the (n+i)th and (n-i)th character are matching.  
+
+The time complexity savings here is in the fact that if we start from the center,
+we can eliminate a lot of redundancy because the longest possible substring must
+in fact start from the center of the string.  For example, if you are starting 
+from the nth character, the longest possible palindrome at that point is (2n)-1 
+and so if you have already found a longer palindrome there is no need to check 
+further.  
+
+We implement this by starting with two pointers at the center of our string s. 
+At each iteration, we check for an odd-length palindrome starting at each pointer,
+an even length palindrome starting at each pointer, and then decrement the left 
+pointer and increment the right pointer.  We do this in a while loop with the stop
+condition being if the longest palindrome already found is longer than the 
+longest possible palindrome remaining as determined by the distance our of pointers 
+to the edge of the string s.  
+
+'''
+
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        p1 = len(s)//2-1
+        p2 = len(s)//2
+        max_len = 1
+        max_pal = s[p2]
+        
+        
+        while (len(s)-p2)*2-1 >= max_len:
+            pl = p2 - 1 
+            pr = p2 + 1
+            while pr < len(s):
+                if s[pl] == s[pr]:
+                    pr += 1
+                    pl -= 1
+                else:
+                    break
+            if pr-pl-1 > max_len:
+                max_len = pr-pl-1
+                max_pal = s[pl+1:pr]
+            
+            if p2+1 < len(s) and s[p2] == s[p2+1]:
+                pl = p2
+                pr = p2+1
+                while pr < len(s):
+                    if s[pl] == s[pr]:
+                        pr += 1
+                        pl -= 1
+                    else:
+                        break
+                if pr-pl-1 > max_len:
+                    max_len = pr-pl-1
+                    max_pal = s[pl+1:pr]
+                    
+            pl = p1 - 1 
+            pr = p1 + 1
+            while pl >= 0:
+                if s[pl] == s[pr]:
+                    pr += 1
+                    pl -= 1
+                else:
+                    break
+            if pr-pl-1 > max_len:
+                max_len = pr-pl-1
+                max_pal = s[pl+1:pr]
+            
+            if s[p1] == s[p1+1]:
+                pl = p1
+                pr = p1+1
+                while pl >= 0:
+                    if s[pl] == s[pr]:
+                        pr += 1
+                        pl -= 1
+                    else:
+                        break
+                if pr-pl-1 > max_len:
+                    max_len = pr-pl-1
+                    max_pal = s[pl+1:pr]
+            
+            p1 -= 1
+            p2 += 1
+        
+        return max_pal
