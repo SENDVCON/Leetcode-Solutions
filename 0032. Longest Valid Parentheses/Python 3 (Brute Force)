@@ -1,0 +1,52 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/longest-valid-parentheses/solution/
+'''
+
+'''
+Note: 
+A clumsy brute force approach that utilizes the concept of 
+longest non-negative interval. 
+
+This should give you the intuition to use a stack data structure.
+'''
+
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+
+        s = s.lstrip(')').rstrip('(')
+
+        count = 0
+        sum_array = [0]
+        for char in s:
+            if char == '(':
+                count += 1
+                sum_array.append(count)
+            else:
+                count -= 1 
+                sum_array.append(count)
+        
+        idx = 1
+        max_len = 0
+        while len(sum_array)-idx > max_len:
+            if sum_array[idx] > sum_array[idx-1]:
+                pend = sum_array[idx]-1
+                if min(sum_array[idx+1:]) > pend:
+                    idx += 1
+                    continue
+                pidx = 1
+                plen = 1
+                while idx+pidx < len(sum_array):
+                    if sum_array[idx+pidx] >= pend:
+                        plen += 1  
+                        if sum_array[idx+pidx] == pend:
+                            max_len = max(plen, max_len)
+                        pidx += 1                                       
+                    else:
+                        max_len = max(plen, max_len)
+                        break
+                idx += 1
+            else:
+                idx += 1
+                        
+        return max_len
