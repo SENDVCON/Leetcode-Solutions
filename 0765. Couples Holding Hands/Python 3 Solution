@@ -1,0 +1,63 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/couples-holding-hands/
+'''
+
+'''
+Intuition:
+We can simply fix the the odd indexed elements and move 
+the even indexed elements in swaps to match the odd elements
+
+The first intuition is that a couple can only take up seats 
+with index n and n+1 for an even n.  
+
+Imagine we have a sequence
+[][X] [X][] [][]
+Then there will be a single seat remaining at each end 
+forcing a couple to be split.
+
+The second intuition for why our strategy is guaranteed to 
+give an efficient solution is as follows.  
+
+Imagine we have a sequence
+[X][Y] [][] [?][X] [][]
+We can choose to move either X or Y, but we must necessarily 
+move one of them to match the first two seats.  Can moving 
+X result in a more efficient solution than moving Y?
+
+Let's suppose moving the right element results in two matching
+pairs.  This is only possible if ?=Y  
+[X][Y] [][] [Y][X] [][]
+[X][X] [][] [Y][Y] [][]
+
+Then moving the left element must also result in two matching 
+pairs.  
+[X][Y] [][] [Y][X] [][]
+[Y][Y] [][] [X][X] [][]
+
+Intuitively, this should suggest that our solution provides 
+the minimum number of swaps. 
+'''
+
+
+class Solution:
+    def minSwapsCouples(self, row: List[int]) -> int:
+        
+        '''
+        Since we are pairing index n and n+1 for even n, 
+        performing integer division by 2 will give both
+        elements of a couple the same value
+        '''
+        row = [seat//2 for seat in row]
+        
+        count = 0 
+        for x in range(1, len(row)-2, 2):
+            if row[x-1] != row[x]:
+                for y in range(x+1, len(row)):
+                    if y%2 == 0 and row[x-1] == row[y]:
+                        row[x], row[y] = row[y], row[x]
+                        count += 1
+                    if y%2 == 1 and row[x-1] == row[y]:
+                        row[x], row[y] = row[y], row[x]
+                        count += 1
+        return count
