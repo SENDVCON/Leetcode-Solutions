@@ -1,0 +1,54 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/sort-colors/
+'''
+
+'''
+Intuition:
+We can use three pointers to sort this in-place
+'''
+
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        p1 = 0 
+        p2 = len(nums)-1
+        while p1 < p2:
+            while p2 >= 0 and nums[p2] == 2:
+                p2 -= 1
+            while p1 <= len(nums)-1 and nums[p1] == 0:
+                p1 += 1
+            if p1 >= p2:
+                return 
+            
+            if nums[p1] == 2 and nums[p2] == 0:
+                nums[p1], nums[p2] = nums[p2], nums[p1]
+                p1 += 1
+                p2 -= 1     
+                continue
+            elif nums[p1] == 2 and nums[p2] == 1:
+                nums[p1], nums[p2] = nums[p2], nums[p1]
+                p2 -= 1
+                continue
+            elif nums[p1] == 1 and nums[p2] == 0:
+                nums[p1], nums[p2] = nums[p2], nums[p1]
+                p1 += 1
+                continue
+            elif nums[p1] == 1 and nums[p2] == 1:
+                p3 = p1
+                while p3 < p2:
+                    if nums[p3] == 1:
+                        p3 += 1
+                    elif nums[p3] == 2:
+                        nums[p3], nums[p2] = nums[p2], nums[p3]
+                        p2 -= 1
+                        break
+                    else:
+                        nums[p3], nums[p1] = nums[p1], nums[p3]
+                        p1 += 1
+                        break
+                if p3 == p2:
+                    return 
+        return
