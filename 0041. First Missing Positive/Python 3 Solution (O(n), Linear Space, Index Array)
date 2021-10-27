@@ -1,0 +1,26 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/first-missing-positive/
+
+Given an unsorted integer array nums, return the smallest missing positive integer.
+You must implement an algorithm that runs in O(n) time and uses constant extra space.
+'''
+
+'''
+Note:
+This solution does not entirely address the problem at hand as it requires
+linear extra space with its construction of an index array.  
+It would be interesting to know if iterables for looping count against the 
+requirements of this problem. 
+'''
+
+
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        found = [0]*(len(nums)+1)
+        
+        for num in nums:
+            if num >= 1 and num <= len(nums):
+                found[num-1] = 1
+        
+        return found.index(0)+1
