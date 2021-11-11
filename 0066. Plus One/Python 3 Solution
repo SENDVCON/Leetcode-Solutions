@@ -1,0 +1,33 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/plus-one/
+'''
+
+'''
+Intuition: Consider how addition is done by hand, we sum columns
+right to left and carry-over amounts greater than 10.
+'''
+
+
+class Solution:
+    def plusOne(self, digits: List[int]) -> List[int]:
+        carry = 1
+
+        for i in range(1,len(digits)+1):
+            col_sum = digits[-i] + carry
+            if col_sum < 10:
+                carry = 0
+                digits[-i] = col_sum
+                break
+            else:
+                digits[-i] = col_sum % 10
+                #carry = 1
+                
+        '''
+        If carry is still > 0, that means the last column had an 
+        amount carried over and we need to extend our digit by one
+        '''
+        if carry > 0:
+            return [carry] + digits
+
+        return digits 
