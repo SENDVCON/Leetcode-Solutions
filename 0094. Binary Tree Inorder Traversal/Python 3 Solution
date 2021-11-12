@@ -1,0 +1,34 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/binary-tree-inorder-traversal/
+
+Given the root of a binary tree, return the inorder traversal of its nodes' values.
+'''
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        solution = []
+        
+        def traverse(node):
+            # If the node has a left child, we visit the left child
+            if node.left:
+                traverse(node.left)
+            
+            # When we have traversed the left branch, we append the parent node
+            solution.append(node.val)
+            
+            # If the node has a right child, we visit the right child
+            if node.right:
+                traverse(node.right)
+        
+        if root:
+            traverse(root)
+        
+        return solution
