@@ -1,0 +1,35 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/unique-paths/
+
+A robot is located at the top-left corner of a m x n grid.
+The robot can only move either down or right at any point in time. 
+The robot is trying to reach the bottom-right corner of the grid.
+How many possible unique paths are there?
+'''
+
+'''
+Intuition:
+Imagine we know the solution to an (m-1) x n board and we also
+know the solution to an m x (n-1) board.  Well then the solution
+to an m x n board is simply the sum of the (m-1) x n and m x (n-1)
+boards.  Why? Consider the first square, there are only two options;
+move down or move right.  If we move down, the result reduces to 
+the (m-1) x n grid and if we move right the result reduces to the 
+m x (n-1) grid.  Since the solution to a m x 1 or 1 x n board is 
+always going to be 1, we have our base case and can solve for any
+board inductively.  This particular pattern is known as Pascal's 
+Triangle.  
+
+https://en.wikipedia.org/wiki/Pascal's_triangle
+'''
+
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        pascal = [[1 for _ in range(n)]]+[[1]+[0 for _ in range(n-1)] for _ in range(m-1)]
+        
+        for x in range(1,m):
+            for y in range(1,n):
+                pascal[x][y] = pascal[x-1][y] + pascal[x][y-1]
+                
+        return pascal[m-1][n-1]
