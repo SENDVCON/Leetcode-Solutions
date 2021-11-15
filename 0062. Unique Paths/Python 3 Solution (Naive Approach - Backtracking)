@@ -1,0 +1,35 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/unique-paths/
+
+A robot is located at the top-left corner of a m x n grid.
+The robot can only move either down or right at any point in time. 
+The robot is trying to reach the bottom-right corner of the grid.
+How many possible unique paths are there?
+'''
+
+'''
+Note: This solution will not pass time limit.  
+Intuition: The only decision that the robot can make at any given 
+block is to either move down or to the right.  We have a completed 
+path when we have reached either the bottom or right edge of the 
+board as there are no more decisions to be made at that point.
+'''
+
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        self.count = 0
+        
+        def bt(x, y, n, m):
+            if x == n:
+                self.count += 1
+                return
+            if y == m:
+                self.count += 1
+                return
+            bt(x+1, y, n, m)
+            bt(x, y+1, n, m)
+        
+        bt(1, 1, n, m)
+        
+        return self.count
