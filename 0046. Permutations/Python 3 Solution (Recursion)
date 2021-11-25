@@ -20,17 +20,19 @@ Results in 6 possible permutations
 
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
+        # Check for trivial case
         if len(nums) == 0:
             return []
+        # Recursion base case n=1
         if len(nums) == 1:
             return [nums]
-        else:
-            permutations = []
-            for i in range(len(nums)):
-                not_i = nums.copy()
-                not_i.pop(i)
-                permutations_i = self.permute(not_i)
-                for permutation_i in permutations_i:
-                    permutations.append([nums[i]] + permutation_i)
-            return permutations
+
+        permutations = []
+        for i in range(len(nums)):
+            not_i = nums.copy()
+            not_i.pop(i)
+            permutations_i = self.permute(not_i)
+            for permutation_i in permutations_i:
+                permutations.append([nums[i]] + permutation_i)
+        return permutations
                                 
