@@ -1,0 +1,36 @@
+''' 
+Link to original problem:
+https://leetcode.com/problems/permutations/
+
+Given an array nums of distinct integers, return all the possible permutations. 
+You can return the answer in any order.
+'''
+
+'''
+We can solve this recursively.  To get all possible permutations, for each element
+in the list nums, call it the ith element, we append the ith element to each 
+permutation of the list nums excluding the ith element.  
+
+Take for example [1, 2, 3]
+1 + all permutations of [2, 3] -> [1, 2, 3], [1, 3, 2]
+2 + all permutations of [1, 3] -> [2, 1, 3], [2, 3, 1]
+3 + all permutations of [1, 2] -> [3, 1, 2], [3, 2, 1]
+Results in 6 possible permutations 
+'''
+
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        if len(nums) == 0:
+            return []
+        if len(nums) == 1:
+            return [nums]
+        else:
+            permutations = []
+            for i in range(len(nums)):
+                not_i = nums.copy()
+                not_i.pop(i)
+                permutations_i = self.permute(not_i)
+                for permutation_i in permutations_i:
+                    permutations.append([nums[i]] + permutation_i)
+            return permutations
+                                
