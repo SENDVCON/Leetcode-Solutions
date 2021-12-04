@@ -1,0 +1,56 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/jump-game-ii/
+
+Given an array of non-negative integers nums, you are initially positioned at the first index of the array.
+Each element in the array represents your maximum jump length at that position.
+Your goal is to reach the last index in the minimum number of jumps.
+You can assume that you can always reach the last index.
+'''
+
+'''
+Intuition:
+The intuition for this is almost entirely same as Problem 55. Jump Game.
+Minor variations are made from the solution to that problem, most notably,
+the inclusion of a step counter.
+
+At each stone, we are given the option to travel up to n steps.  Since we 
+have the option to pick any number of steps up to n, then we should always
+land on the stone that can get us the furthest in aggregate. 
+
+For example, consider 
+
+[4, 1, 3, 1, 2, 5, 4, 0]
+
+If we start on index 0, our options are to 
+move 1 step to index 1, which would allow us to move a further 1 or 2 total
+move 2 steps to index 2, which would allow us to move a further 3 or 5 total
+move 3 steps to index 3, which would allow us to move a further 1 or 4 total
+move 4 steps to index 4, which would allow us to move a further 2 or 6 total
+
+If we jump to index 4, we can still achieve any destination in the same 
+number of moves that would be achievable if we used our first move to jump to
+index 1, 2 or 3, however, it also gives us options unachievable if we jump 
+to index 4 on move 1, namely we can reach index 6 in 2 moves.  Thus, picking 
+index 4 as our first move is at least as good, if not better, than any other 
+move.  Again, the key here is that you have the option to choose UP TO n steps,
+but are not obligated to move the full n steps.  
+'''
+
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        pointer = 0
+        count = 0
+        while pointer < len(nums)-1:
+            # If it is possible to reach the last stone from this stone we are done.
+            if pointer + nums[pointer] >= len(nums)-1:
+                return count+1
+            max_step = 0
+            max_step_pointer = 0
+            for i in range(1, nums[pointer]+1):
+                if i + nums[pointer+i] >= max_step:
+                    max_step = i + nums[pointer+i]
+                    max_step_pointer = i
+            pointer += max_step_pointer
+            count += 1
+        return count
