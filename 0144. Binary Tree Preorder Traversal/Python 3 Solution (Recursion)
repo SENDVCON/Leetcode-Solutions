@@ -6,7 +6,7 @@ Given the root of a binary tree, return the preorder traversal of its nodes' val
 '''
 
 '''
-Note: "Preorder" means you traverse the root node, then the left child then the right child.
+Note: "Preorder" means you traverse the root node, then the left subtree then the right subtree.
 '''
 
 # Definition for a binary tree node.
