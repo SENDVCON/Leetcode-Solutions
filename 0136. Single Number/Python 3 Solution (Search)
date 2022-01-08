@@ -1,0 +1,19 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/single-number/
+'''
+
+'''
+Note: After sorting, we only need to check every other element to
+see that it is a matching pair, we stop before the last element to 
+avoid an indexing error, if we arrive at the last element without 
+finding a single value, then the single value must be the last element.
+'''
+
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        nums.sort()
+        for i in range(0,len(nums)-1,2):
+            if nums[i] != nums[i+1]:
+                return nums[i]
+        return nums[-1]
