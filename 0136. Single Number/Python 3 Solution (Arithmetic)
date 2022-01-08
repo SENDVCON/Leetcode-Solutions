@@ -1,0 +1,14 @@
+'''
+Link to original problem:
+https://leetcode.com/problems/single-number/
+'''
+
+'''
+Intuition:
+If we let N be the sum of all the distinct values, and M be the sum of 
+all the values in the list, the "missing" single value should be 2N-M
+'''
+
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        return 2*sum(set(nums))-sum(nums)
